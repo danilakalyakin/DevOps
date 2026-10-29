@@ -1,0 +1,30 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: registry.local/devops/backend:2.0
+    container_name: devops-backend
+    restart: always
+    volumes:
+      - ./data/data.txt:/app/data.txt
+    networks:
+      - devops-net
+
+  frontend:
+    build:
+      context: ./frontend/frontend-app
+      dockerfile: Dockerfile
+    image: registry.local/devops/frontend:2.0
+    container_name: devops-frontend
+    restart: always
+    ports:
+      - "8080:80"         
+    depends_on:
+      - backend
+    networks:
+      - devops-net
+
+networks:
+  devops-net:
+    driver: bridge
