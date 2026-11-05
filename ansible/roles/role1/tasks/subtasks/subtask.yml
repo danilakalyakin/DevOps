@@ -18,7 +18,7 @@
         name: docker
         types: deb
         uris: https://download.docker.com/linux/ubuntu
-        suites: "{{ ansible_distribution_release }}"
+        suites: bookworm  
         components: stable
         architectures: amd64
         signed_by: https://download.docker.com/linux/ubuntu/gpg
@@ -45,8 +45,6 @@
         path: "{{ devops_dir }}/DevOps/data/data.txt"
         state: touch
         mode: '0644'
-
-
 
     - name: Clone repositories
       ansible.builtin.git:
