@@ -23,11 +23,11 @@
       ansible.builtin.deb822_repository:
         name: docker
         types: deb
-        uris: https://download.docker.com/linux/ubuntu
-        suites: bookworm  
+        uris: https://download.docker.com/linux/debian
+        suites: bookworm
         components: stable
         architectures: amd64
-        signed_by: https://download.docker.com/linux/ubuntu/gpg
+        signed_by: https://download.docker.com/linux/debian/gpg
         state: present
 
     - name: Install Docker Engine and Compose
