@@ -7,7 +7,6 @@
         path: /etc/apt/sources.list.d/docker.sources
         state: absent
 
-
     - name: Install prerequisite packages
       ansible.builtin.apt:
         name:
@@ -46,12 +45,7 @@
         state: directory
         mode: '0755'
 
-    - name: Ensure data.txt exists
-      ansible.builtin.file:
-        path: "{{ devops_dir }}/DevOps/data/data.txt"
-        state: touch
-        mode: '0644'
-
+    # --- СНАЧАЛА КЛОНИРУЕМ ---
     - name: Clone repositories
       ansible.builtin.git:
         repo: "https://github.com/{{ git_user }}/{{ item }}.git"
@@ -62,3 +56,16 @@
         - backend
         - frontend
         - DevOps
+
+    # --- ПОТОМ СОЗДАЁМ ПАПКУ И ФАЙЛ ---
+    - name: Ensure data directory exists
+      ansible.builtin.file:
+        path: "{{ devops_dir }}/DevOps/data"
+        state: directory
+        mode: '0755'
+
+    - name: Ensure data.txt exists
+      ansible.builtin.file:
+        path: "{{ devops_dir }}/DevOps/data/data.txt"
+        state: touch
+        mode: '0644'
