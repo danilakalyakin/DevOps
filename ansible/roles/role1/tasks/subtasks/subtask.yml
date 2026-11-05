@@ -2,6 +2,12 @@
 - name: Install and configure Docker
   tags: [deploy, install, clone]
   block:
+    - name: Remove broken docker repo if exists
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/docker.sources
+        state: absent
+
+
     - name: Install prerequisite packages
       ansible.builtin.apt:
         name:
