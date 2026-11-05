@@ -1,0 +1,60 @@
+---
+- name: Install and configure Docker
+  tags: [deploy, install, clone]
+  block:
+    - name: Install prerequisite packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - git
+          - python3-debian
+        state: present
+        update_cache: yes
+
+    - name: Add Docker repository (deb822 format)
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: deb
+        uris: https://download.docker.com/linux/ubuntu
+        suites: "{{ ansible_distribution_release }}"
+        components: stable
+        architectures: amd64
+        signed_by: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Install Docker Engine and Compose
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+
+    - name: Ensure devops directory exists
+      ansible.builtin.file:
+        path: "{{ devops_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Ensure data.txt exists
+      ansible.builtin.file:
+        path: "{{ devops_dir }}/DevOps/data/data.txt"
+        state: touch
+        mode: '0644'
+
+
+
+    - name: Clone repositories
+      ansible.builtin.git:
+        repo: "https://github.com/{{ git_user }}/{{ item }}.git"
+        dest: "{{ devops_dir }}/{{ item }}"
+        version: "{{ git_branch }}"
+        force: yes
+      loop:
+        - backend
+        - frontend
+        - DevOps

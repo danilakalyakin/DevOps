@@ -1,0 +1,6 @@
+---
+- name: Deploy DevOps microservices to remote node
+  hosts: devops
+  become: yes
+  roles:
+    - role: role1

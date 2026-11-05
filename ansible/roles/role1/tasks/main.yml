@@ -1,0 +1,16 @@
+---
+- name: Include install and clone subtasks
+  ansible.builtin.include_tasks: subtasks/subtask.yml
+  tags: [deploy, install, clone]
+
+- name: Start microservices
+  ansible.builtin.command:
+    cmd: docker compose up -d --build
+    chdir: "{{ devops_dir }}/DevOps"
+  tags: [deploy, start]
+
+- name: Stop microservices
+  ansible.builtin.command:
+    cmd: docker compose down
+    chdir: "{{ devops_dir }}/DevOps"
+  tags: [stop]

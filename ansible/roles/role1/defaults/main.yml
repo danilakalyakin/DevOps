@@ -1,0 +1,4 @@
+---
+devops_dir: "/opt/devops"
+git_branch: "main"
+git_user: "danilakalyakin"
